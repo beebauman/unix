@@ -6,12 +6,15 @@
 # 3. The firewall rules file, saved to /etc/iptables.firewall.rules.
 # 4. The firewall boot load script, saved to /etc/network/if-pre-up.d/iptables
 
-# You'll need to supply the script with the short name of a Host whose Hostname and User parameters are defined in ~/.ssh/config. For example:
+# You'll need to supply the script with the short name of a Host whose Hostname
+#  and User parameters are defined in ~/.ssh/config. For example:
 # Host widget
 # 	Hostname widget.acme.come
 # 	User johnsusername
 
-# Your User must have sudo privileges on the server, and they must be able to run the command 'sudo rsync' without a password. This can be accomplished by adding the following line to /etc/sudoers:
+# Your User must have sudo privileges on the server, and they must be able to
+#  run the command 'sudo rsync' without a password. This can be accomplished
+#  by adding the following line to /etc/sudoers:
 # johnsusername ALL = NOPASSWD: /usr/bin/rsync
 
 # --------------------------------------------------#
@@ -88,5 +91,4 @@ backupfiles+=('/var/backups/mysql')
 ARG="${backupfiles[@]}"
 
 # Synchronize the local backup with the final list of directories and files on the remote server
-rsync -avz --delete --relative --progress --rsync-path="sudo rsync" $HOST:"$ARG" \
-	"$BACKUP_DIR"
+rsync -avz --delete --relative --progress --rsync-path="sudo rsync" $HOST:"$ARG" "$BACKUP_DIR"
