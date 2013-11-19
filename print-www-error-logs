@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# This script will print last 30 lines of the error logs for every enabled Apache site.
+# We assume your error log files are stored at /var/www/sitename/error.log.
+# Assuming that you've set up your crontab to email the output of cronjobs to you,
+#  you can put this script in (for example) /etc/cron.daily, and you'll get
+#  your error logs emailed to you once a day.
+
+# ----------------------------------------------------------------------- #
+
+cd /etc/apache2/sites-enabled
+
+sites=(*)
+
+for site in "${sites[@]}"
+do
+	echo "Last 30 lines of /var/www/" ${site} "/error.log:"
+	tail -n 30 /var/www/${site}/error.log
+	printf "\n"
+done
