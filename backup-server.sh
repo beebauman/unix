@@ -1,10 +1,12 @@
 #!/bin/sh
 
+# Compatibility note: This script has only been tested on Debian 7 (wheezy).
+
 # This script requires the following scripts on the server:
 # 1. The database backup script at /var/backups/mysql/backup-mysql.sh.
 # 2. The crontab backup script at /var/backups/crontabs/backup-crontabs.sh.
 # 3. The firewall rules file at /etc/iptables.firewall.rules.
-# 4. The firewall boot load script at /etc/network/if-pre-up.d/iptables
+# 4. The firewall boot load script at /etc/network/if-pre-up.d/iptables.
 
 # You'll need to supply the script with the short name of a Host whose Hostname
 #  and User parameters are defined in your local machine's ~/.ssh/config. For example:
