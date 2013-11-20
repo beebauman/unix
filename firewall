@@ -1,6 +1,8 @@
 #!/bin/sh
 
-# This script should be placed in /etc/network/if-pre-up.d/
+# This script should be placed in /etc/network/if-pre-up.d/ so that it automatically
+#  runs on boot.
+
+# --------------------------------------------------#
 
 iptables-restore < /etc/iptables.firewall.rules
-

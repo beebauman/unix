@@ -1,8 +1,9 @@
 #!/bin/sh
 
-# This script should be placed in /var/backups/crontabs
-# It is run by a general backup script for the whole server
-# It will back up every user's crontab
+# This script should be placed in /var/backups/crontabs/.
+# It will back up the crontab for every user on the server.
+
+# --------------------------------------------------#
 
 for user in $(cut -f1 -d: /etc/passwd)
 do

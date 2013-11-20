@@ -1,94 +1,110 @@
 #!/bin/sh
 
-# This script requires the following scripts on the server being backed up:
-# 1. The database backup script, saved to /var/backups/mysql/backup-mysql.sh.
-# 2. The crontab backup script, saved to /var/backups/crontabs/backup-crontabs.sh.
-# 3. The firewall rules file, saved to /etc/iptables.firewall.rules.
-# 4. The firewall boot load script, saved to /etc/network/if-pre-up.d/iptables
+# This script requires the following scripts on the server:
+# 1. The database backup script at /var/backups/mysql/backup-mysql.sh.
+# 2. The crontab backup script at /var/backups/crontabs/backup-crontabs.sh.
+# 3. The firewall rules file at /etc/iptables.firewall.rules.
+# 4. The firewall boot load script at /etc/network/if-pre-up.d/iptables
 
 # You'll need to supply the script with the short name of a Host whose Hostname
-#  and User parameters are defined in ~/.ssh/config. For example:
+#  and User parameters are defined in your local machine's ~/.ssh/config. For example:
 # Host widget
 # 	Hostname widget.acme.come
 # 	User johnsusername
 
-# Your User must have sudo privileges on the server, and they must be able to
-#  run the command 'sudo rsync' without a password. This can be accomplished
+# Your User account on the server must have sudo privileges, and must be configured with
+#  permission to run the rsync command using sudo without a password. You can do this
 #  by adding the following line to /etc/sudoers:
 # johnsusername ALL = NOPASSWD: /usr/bin/rsync
 
 # --------------------------------------------------#
 
-# Get the Host and Hostname
-read -p "Host to back up: " HOST
-HOSTNAME=$(cat ~/.ssh/config | grep Hostname | awk '{print $2}' | grep $HOST)
+# Get the Host and Hostname of the server being backed up.
+read -p "Host to back up: " host
+hostname=$(cat ~/.ssh/config | grep Hostname | awk '{print $2}' | grep $host)
+echo "Found Host '${host}' with Hostname '${hostname}'."
 
-# Get the backup directory
-read -e -p "Local backup directory: " INPUT_DIR
-# Expand tilde to absolute path to home directory
-BACKUP_DIR=$(eval echo $INPUT_DIR)
+# Get the directory path on the local machine where you want the backup saved.
+read -e -p "Local backup directory: " input_dir
 
-# Delete all .DS_Store files so that rsync won't need to later
-find "$BACKUP_DIR" -name '*.DS_Store' -type f -delete
+# Expand tilde to absolute path for $HOME directory
+# backup_dir=$(echo $input_dir | sed "s#~#$HOME#")
+backup_dir=$(eval "echo $input_dir")
+echo "Absolute path to backup directory is ${backup_dir}."
 
-# Create an array to store the locations we're going to back up
-backupfiles=()
+# Delete .DS_Store files in the local backup so that rsync won't need to.
+echo "Looking for local .DS_Store files..."
+wc_found=$(find "$backup_dir" -name '*.DS_Store' -type f -exec rm {} \; -print | wc -l)
+found=$(echo $wc_found) # Just to strip leading whitespace from wc output.
+if [ $found -lt 1 ]
+then
+	echo "There were no .DS_Store files to delete."
+else
+	echo "${found} .DS_Store file(s) deleted."
+fi
+
+# Create an array to store paths to the directories and files on the server that
+#  we're going to back up.
+backup_items=()
 
 # Websites
-backupfiles+=('/var/www')
+backup_items+=('/var/www')
 
 # Apache config
-backupfiles+=('/etc/apache2/sites-available')
-backupfiles+=('/etc/apache2/apache2.conf')
+backup_items+=('/etc/apache2/sites-available')
+backup_items+=('/etc/apache2/apache2.conf')
 
 # Networking
-backupfiles+=('/etc/hostname')
-backupfiles+=('/etc/hosts')
-backupfiles+=('/etc/network/interfaces')
-backupfiles+=('/etc/resolv.conf')
+backup_items+=('/etc/hostname')
+backup_items+=('/etc/hosts')
+backup_items+=('/etc/network/interfaces')
+backup_items+=('/etc/resolv.conf')
 
 # Postfix configuration
-backupfiles+=('/etc/postfix/main.cf')
+backup_items+=('/etc/postfix/main.cf')
 
 # Firewall
+backup_items+=('/etc/iptables.firewall.rules')
+backup_items+=('/etc/network/if-pre-up.d/iptables')
 
-backupfiles+=('/etc/iptables.firewall.rules')
-backupfiles+=('/etc/network/if-pre-up.d/iptables')
-
-# Sudoers
-backupfiles+=('/etc/sudoers')
+# Sudo
+backup_items+=('/etc/sudoers')
 
 # SSH
-backupfiles+=('/home/beebauman/.ssh')
+backup_items+=('/home/beebauman/.ssh')
 
 # Cron
 
-# Run crontabs backup script
-ssh -t $HOST sudo /var/backups/crontabs/backup-crontabs.sh
+echo "Running crontab backup script..."
+ssh -t $host sudo /var/backups/crontabs/backup-crontabs.sh
 
-# Add crontabs backup files (includes backup and restore scripts)
-backupfiles+=('/var/backups/crontabs')
+# User crontabs (includes backup script and restore script)
+backup_items+=('/var/backups/crontabs')
 
-# Add cron* system files
-backupfiles+=('/etc/crontab')
-backupfiles+=('/etc/cron.d')
-backupfiles+=('/etc/cron.hourly')
-backupfiles+=('/etc/cron.daily')
-backupfiles+=('/etc/cron.weekly')
-backupfiles+=('/etc/cron.monthly')
+# System crontab
+backup_items+=('/etc/crontab')
+
+# Cronjob directories
+backup_items+=('/etc/cron.d')
+backup_items+=('/etc/cron.hourly')
+backup_items+=('/etc/cron.daily')
+backup_items+=('/etc/cron.weekly')
+backup_items+=('/etc/cron.monthly')
 
 # MySQL
 
-# Run MySQL databases backup script
-ssh -t $HOST sudo /var/backups/mysql/backup-mysql.sh
+echo "Running MySQL databases backup script..."
+ssh -t $host sudo /var/backups/mysql/backup-mysql.sh
 
-# Add mysql backup files (includes backup script)
-backupfiles+=('/var/backups/mysql')
+# MySQL databases (includes backup script)
+backup_items+=('/var/backups/mysql')
 
-# Perform the backup
+# We're done adding locations to back up. Let's perform the actual backup:
 
-# Get the array elements (we need to double-bag the array to use it with rsync)
-ARG="${backupfiles[@]}"
+# Get the backup items array as a string. We will supply this variable to rsync in
+#  quotes. We need to double-bag like this or rsync won't interpret it correctly.
+backup_items_string="${backup_items[@]}"
 
-# Synchronize the local backup with the final list of directories and files on the remote server
-rsync -avz --delete --relative --progress --rsync-path="sudo rsync" $HOST:"$ARG" "$BACKUP_DIR"
+# Synchronize the local backup directory with the backup items on the server.
+rsync -avz --delete --relative --progress --rsync-path="sudo rsync" \
+	$host:"$backup_items_string" "$backup_dir"

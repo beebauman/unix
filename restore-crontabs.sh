@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# This script should be placed in /var/backups/crontabs
-# It can be run manually to restore crontabs backed up to /var/backups/crontabs
+# This script should be placed in /var/backups/crontabs/.
+# It will restore all crontab backups that have been saved to /var/backups/crontabs/.
+
+# --------------------------------------------------#
 
 suffix=.crontab
 prefix=/crontabs-backup/
