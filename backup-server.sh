@@ -21,6 +21,9 @@
 
 # --------------------------------------------------#
 
+# Enter your username on the server:
+username=""
+
 # Get the Host and Hostname of the server being backed up.
 read -p "Host to back up: " host
 hostname=$(cat ~/.ssh/config | grep Hostname | awk '{print $2}' | grep $host)
@@ -72,8 +75,8 @@ backup_items+=('/etc/network/if-pre-up.d/iptables')
 # Sudo
 backup_items+=('/etc/sudoers')
 
-# SSH
-backup_items+=('/home/beebauman/.ssh')
+# Home folder
+backup_items+=('/home/${username}')
 
 # Cron
 
