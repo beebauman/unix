@@ -22,12 +22,15 @@
 # --------------------------------------------------#
 
 # Enter your username on the server:
-username=""
+username="beebauman"
 
 # Get the Host and Hostname of the server being backed up.
 read -p "Host to back up: " host
 hostname=$(cat ~/.ssh/config | grep Hostname | awk '{print $2}' | grep $host)
 echo "Found Host '${host}' with Hostname '${hostname}'."
+
+# Get the SSH port of the server being backed up.
+read -p "SSH port: " port
 
 # Get the directory path on the local machine where you want the backup saved.
 read -e -p "Local backup directory: " input_dir
@@ -59,18 +62,24 @@ backup_items+=('/var/www')
 backup_items+=('/etc/apache2/sites-available')
 backup_items+=('/etc/apache2/apache2.conf')
 
+# PHP config
+backup_items+=('/etc/php5/apache2/php.ini')
+
 # Networking
 backup_items+=('/etc/hostname')
 backup_items+=('/etc/hosts')
 backup_items+=('/etc/network/interfaces')
 backup_items+=('/etc/resolv.conf')
 
+# OpenVPN
+backup_items+=('/etc/openvpn')
+
 # Postfix configuration
 backup_items+=('/etc/postfix/main.cf')
 
 # Firewall
 backup_items+=('/etc/iptables.firewall.rules')
-backup_items+=('/etc/network/if-pre-up.d/iptables')
+backup_items+=('/etc/network/if-pre-up.d/firewall')
 
 # Sudo
 backup_items+=('/etc/sudoers')
@@ -111,5 +120,5 @@ backup_items+=('/var/backups/mysql')
 backup_items_string="${backup_items[@]}"
 
 # Synchronize the local backup directory with the backup items on the server.
-rsync -avz --delete --relative --progress --rsync-path="sudo rsync" \
+rsync -avz -e "ssh -p $port" --delete --relative --progress --rsync-path="sudo rsync" \
 	$host:"$backup_items_string" "$backup_dir"
