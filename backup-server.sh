@@ -79,7 +79,7 @@ backup_items+=('/etc/postfix/main.cf')
 
 # Firewall
 backup_items+=('/etc/iptables.firewall.rules')
-backup_items+=('/etc/network/if-pre-up.d/firewall')
+backup_items+=('/etc/network/if-pre-up.d/iptables')
 
 # Sudo
 backup_items+=('/etc/sudoers')
