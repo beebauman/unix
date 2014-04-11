@@ -30,15 +30,11 @@ hostname=$(cat ~/.ssh/config | grep Hostname | awk '{print $2}' | grep $host)
 echo "Found Host '${host}' with Hostname '${hostname}'."
 
 # Get the SSH port of the server being backed up.
-read -p "SSH port: " port
+read -p "SSH port (standard is 22, custom might be something like 51234): " port
 
-# Get the directory path on the local machine where you want the backup saved.
-read -e -p "Local backup directory: " input_dir
-
-# Expand tilde to absolute path for $HOME directory
-# backup_dir=$(echo $input_dir | sed "s#~#$HOME#")
+read -e -p "Path to rsync destination: " input_dir
 backup_dir=$(eval "echo $input_dir")
-echo "Absolute path to backup directory is ${backup_dir}."
+echo "Your backup will be saved to: ${backup_dir}."
 
 # Delete .DS_Store files in the local backup so that rsync won't need to.
 echo "Looking for local .DS_Store files..."
@@ -50,6 +46,17 @@ then
 else
 	echo "${found} .DS_Store file(s) deleted."
 fi
+
+# Get the exclusion list.
+read -p "Path to rsync exclusion list (enter 'n' for none): " exclusion_file
+if [ "$exclusion_file_path" != 'n' ]; then
+	exclusion_file_path=$(eval "echo $exclusion_file")
+	exclusion_string='--exclude-from '"$exclusion_file_path"
+else
+	exclusion_string=''
+fi
+
+
 
 # Create an array to store paths to the directories and files on the server that
 #  we're going to back up.
@@ -120,5 +127,5 @@ backup_items+=('/var/backups/mysql')
 backup_items_string="${backup_items[@]}"
 
 # Synchronize the local backup directory with the backup items on the server.
-rsync -avz -e "ssh -p $port" --delete --relative --progress --rsync-path="sudo rsync" \
+rsync -az $exclusion_string -e "ssh -p $port" --delete --relative --ignore-errors --rsync-path="sudo rsync" \
 	$host:"$backup_items_string" "$backup_dir"
