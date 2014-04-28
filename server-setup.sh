@@ -9,4 +9,3 @@ ln -s print-www-error-logs /etc/cron.daily/
 mkdir -p /var/backups/crontabs
 
 mkdir -p /var/backups/mysql
-

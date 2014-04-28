@@ -1,6 +1,9 @@
-# Server setup cheatsheet
+# Server admin cheatsheet
 
-## Provisioning
+## Initial setup
+================
+
+### Provisioning
 ===============
 
 1. Choose hostname and domain, e.g. `pizza.food.com`.
@@ -11,10 +14,10 @@
 
 1. In the domain’s DNS, add an A record for the hostname pointing to cloud server's IP.
 
-## Security
+### Security
 ===========
 
-### Create non-root user
+#### Create non-root user
 
 1. Log in as root:
 
@@ -29,15 +32,15 @@
 		
 		# useradd --user-group --groups sudo --create-home --shell /bin/bash username
 
-### Keypair authentication
+#### Set up keypair authentication
 
-#### Generate keypair on local machine
+##### Generate keypair on local machine
 
 		$ ssh-keygen
 		[enter path to private key file e.g. /Users/local_username/Downloads/username_rsa]
 		[Leave passphrase blank]
 
-#### Set up public key on server
+##### Put public key on server
 
 1. Copy the public key to the server:
 
@@ -51,7 +54,7 @@
 		# chmod 700 .ssh
 		# chmod 600 .ssh/authorized_keys
 
-#### Disable server's password authentication and root login
+##### Disable server's password authentication and root login
 
 1. Modify the server’s SSH configuration file `/etc/ssh/sshd_config`:
 
@@ -62,7 +65,7 @@
 
 		# service ssh restart
 
-#### Set local machine's SSH to use keypair authentication
+##### Set local machine's SSH to use keypair authentication
 
 1. Add this line to your local `~/.profile`:
 
@@ -82,7 +85,7 @@
 		$ sudo launchctl start com.openssh.sshd
 		$ source ~/.profile
 
-#### Test keypair authentication
+##### Test keypair authentication
 
 1. Log in using SSH keypair authentication:
 
@@ -91,7 +94,7 @@
 	Hopefully that worked :-)
 
 
-### Packages
+#### Packages
 
 1. Update packages:
 
@@ -104,22 +107,22 @@
 	
 	Record the password you set for MYSQL's root user.
 
-## Misc.
+### Other
 ========
 
-### Time Zone
+#### Time Zone
 
 1. Verify time zone is set to UTC:
 		
 		# dpkg-reconfigure tzdata
 
-### Environment Variables
+#### Environment Variables
 
 1. Add to `~/.profile`:
 
 		export EDITOR=/usr/bin/vi
 
-## Networking
+### Networking
 =============
 
 1. Create a file containing the machine’s name:
@@ -163,7 +166,7 @@
 
 		# ip addr show eth0
 
-## Apache
+### Apache
 =========
 
 1. Navigate to the server’s DNS name to test the Apache installation. You should see the default “It works!” page.
@@ -220,7 +223,7 @@
 
 		$ sudo service apache2 restart
 
-## PHP
+### PHP
 ======
 
 1. Install PHP:
@@ -233,7 +236,7 @@
 		<?php
 		phpinfo();
 		
-## MYSQL
+### MYSQL
 ========
 
 1. Edit MYSQL's configuration file `/etc/mysql/my.cnf`:
@@ -263,7 +266,7 @@
 
 1. If necessary, import databases from backups using Sequel Pro.app.
 
-## Postfix
+### Postfix
 
 1. Install postfix.
 
@@ -289,7 +292,7 @@
 
 	Note: I did make one change from the instructions in the postfix docs. I left the relayhost parameter blank, so outgoing emails are delivered directly to the MX of the recipient’s domain name. Using the suggested value of $mydomain would mean all outgoing mail is sent though my domain’s MX (which is Google Apps). I originally had it set that way, until Google started sending me back bounces that said “account doesn’t exist” for non-Google email addresses.
 
-## Git
+### Git
 ======
 
 1. Copy private keys for Github and Bitbucket to `/home/username/.ssh`.
@@ -313,7 +316,7 @@
 		$ git config --global user.name "Testy Tester"
 		$ git config --global user.email webmaster@food.com
 
-## Cron
+### Cron
 =======
 
 1. Set up your email address to recieve cronjob output from the root, username, and system crontabs.
@@ -330,13 +333,13 @@
 ## Misc.
 ========
 
-### Install an FTP client
+#### Install an FTP client
 
 	# apt-get install proftpd
 
 Choose standalone mode when asked during installation.
 
-### Install and use screen for a shared console session
+#### Install and use screen for a shared console session
 
 Install screen:
 
@@ -362,7 +365,7 @@ The second user can then join the session:
 
 	# screen -x [username1]/collaborate
 
-### Install a browsing proxy
+#### Install a browsing proxy
 
 In case I need to masquerade as a different IP address.
 
@@ -379,19 +382,19 @@ Then restart TinyProxy:
 
 Note: the TinyProxy default port is 8888. Don’t forget to open the firewall!
 
-### Delete all files except certain ones
+#### Delete all files except certain ones
 
 	find . ! -name "do-not-delete-me*" -type f -exec rm -rf {} \;
 
-### Completely remove a package and all its files
+#### Completely remove a package and all its files
 
 	apt-get --purge remove packagename
 
-### Find and replace
+#### Find and replace
 
 	apt-get install rpl
 
-### Find and replace text throughout all SMF posts
+#### Find and replace text throughout all SMF posts
 
 	UPDATE `smf_messages`
 	SET `body` = REPLACE(`body`, 'search string', 'replacement string');

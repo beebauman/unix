@@ -1,15 +1,10 @@
 # unixme
-========
+--------
 
-Pronounced as in "you nix me", **`unixme`** is a collection of useful scripts for server administrators.
-
-## Compatibility note
-=====================
-
-**`unixme`** has been tested on Debian 7 (wheezy) and Mac OS X 10.9 (Mavericks).
+**`unixme`** (pronounced "you nix me") is a collection of useful scripts for server administrators.
 
 ## Features
-===========
+-----------
 
 ### 1. Setup script for your server:
 
@@ -22,8 +17,12 @@ Pronounced as in "you nix me", **`unixme`** is a collection of useful scripts fo
 * Included and excluded paths are specified using a simple but powerful filter list (template provided).
 * Optionally include all MySQL databases, crontabs, and cronjobs in the backup. (A script that restores crontabs from the backups is also included.)
 
+### Compatibility notice
+
+Tested on Debian 7 (wheezy) and Mac OS X 10.9 (Mavericks).
+
 ## Getting started
-==================
+------------------
 
 ### Server setup
 
