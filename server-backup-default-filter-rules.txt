@@ -1,0 +1,72 @@
+# server-backup.sh rsync filter rules list
+
+# For syntax help, see developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/rsync.1.html,
+# specifically, the "FILTER RULES" section.
+
+# --------------------------------------------------#
+
+# Include all directories. Otherwise, inclusions of multilevel paths won't work. This will
+# include lots of empty directories that we don't want, but they'll all be removed
+# with rsync's --prune-empty-dirs option.
++ */
+
+# My personal /var/www include/exclude included here as an example:
+
+# The first directive says "exclude all contents of /var/www/frameworks." *** means 
+# recursive. This exclusion rule must be placed before the subsequent inclusion 
+# rule for /var/www, because rsync only processes each path once. Whatever filter 
+# rule it encounters for a path (include or exclude) is final. So, in summary, the 
+# following two rules say "include everything in /var/www, except for /var/www/frameworks."
+- /var/www/frameworks/***
++ /var/www/***
+
+# These two rules include the crontab and database backup files created by unixme
+# when using the backup script's --crontab and --databases options.
++ /var/backups/crontabs/***
++ /var/backups/mysql/***
+
+# Other files you might want to include in your backups:
+
+# unixme itself (for example, in case you've modified the default firewall rules)
++ /unixme/***
+
+# Apache's global configuration and configured sites, and PHP's configuration file
++ /etc/apache2/sites-available/***
++ /etc/apache2/apache2.conf
++ /etc/php5/apache2/php.ini
+
+# Networking configuration
++ /etc/hostname
++ /etc/hosts
++ /etc/network/interfaces
++ /etc/resolv.conf
+
+# Postfix configuration
++ /etc/postfix/main.cf
+
+# iptables 
++ /etc/network/if-pre-up.d/iptables-load
+
+# sudo configuration
++ /etc/sudoers
+
+# OpenVPN configuration files
++ /etc/openvpn/***
+
+# User account home directories
++ /home/***
+
+# System crontab
++ /etc/crontab
+
+# System cronjob directories
++ /etc/cron.d/***
++ /etc/cron.hourly/***
++ /etc/cron.daily/***
++ /etc/cron.weekly/***
++ /etc/cron.monthly/***
+
+# Lastly, we remove all files not explicitly included. Otherwise, every single file not
+# explicitly excluded will be included.
+- *
+

@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# Compatibility note: This script has only been tested on Debian 7 (wheezy).
+# Prints the last 30 lines of the error logs for every enabled Apache site.
 
-# This script will print last 30 lines of the error logs for every enabled Apache site.
-# Your error log files must be stored at /var/www/sitename/error.log.
-# Assuming that you've set up your crontab to email you cronjob output,
-#  you can save this script in (for example) /etc/cron.daily, and you'll get
-#  the recent error logs for your website(s) emailed to you once a day.
+# IMPORTANT: The script assumes that all your Apache error logs are
+# at /var/www/sitename/error.log.
+
+# SUGGESTION: Save this script to /etc/cron.daily/, and the error logs will be emailed
+# to you once a day, assuming you've got MAILTO="your@email.com" in your system
+# crontab (/etc/crontab), root user crontab (sudo crontab -e), and non-root user 
+# crontab (crontab -u username -e).
 
 # ----------------------------------------------------------------------- #
 

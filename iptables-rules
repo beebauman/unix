@@ -1,10 +1,4 @@
-# Compatibility note: These iptables commands have only been tested on Debian 7 (wheezy).
-
-# This file should be placed in /etc/.
-# It contains the iptables commands that create your firewall.
-# To automatically recreate your firewall every time the server boots, save a
-#  single line script file to /etc/network/if-pre-up.d/. The single line is:
-#  iptables-restore < /etc/iptables.firewall.rules
+# iptables rules file.
 
 # --------------------------------------------------#
 
