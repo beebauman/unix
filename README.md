@@ -1,10 +1,8 @@
 # unixme
---------
 
 **`unixme`** (pronounced "you nix me") is a collection of useful scripts for server administrators.
 
 ## Features
------------
 
 ### 1. Setup script for your server:
 
@@ -22,7 +20,6 @@
 Tested on Debian 7 (wheezy) and Mac OS X 10.9 (Mavericks).
 
 ## Getting started
-------------------
 
 ### Server setup
 
