@@ -2,16 +2,12 @@
 
 ## Features
 
-### 1. Setup script for your server:
-
 * Sets up an `iptables` firewall with an editable ruleset that survives reboots.
 * Adds a daily cronjob that emails you the tail of the Apache error logs for all your websites.
-
-### 2. Backup script for your local machine to sync your server's important files:
-
-* Backups are performed using rsync, which is fast and incremental.
-* Included and excluded paths are specified using a simple but powerful filter list (template provided).
-* Optionally include all MySQL databases, crontabs, and cronjobs in the backup. (A script that restores crontabs from the backups is also included.)
+* Includes a backup script for your local machine to sync your server's important files:
+	* Backups are performed using rsync, which is fast and incremental.
+	* Included and excluded paths are specified using a simple but powerful filter list (template provided).
+	* Optionally include all MySQL databases, crontabs, and cronjobs in the backup. (A script that restores crontabs from the backups is also included.)
 
 ### Compatibility notice
 
