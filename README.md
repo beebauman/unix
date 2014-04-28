@@ -1,6 +1,6 @@
 # unixme
 
-**`unixme`** (pronounced "you nix me") is a collection of useful scripts for server administrators.
+**`unixme`** (pronounced "you nix me") is a collection of useful shell scripts for server administrators.
 
 ## Features
 
