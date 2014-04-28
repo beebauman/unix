@@ -1,5 +1,3 @@
-# unixme
-
 **`unixme`** (pronounced "you nix me") is a collection of useful shell scripts for server administrators.
 
 ## Features
