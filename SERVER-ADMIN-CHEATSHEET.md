@@ -1,10 +1,8 @@
 # Server admin cheatsheet
 
 ## Initial setup
-================
 
 ### Provisioning
-===============
 
 1. Choose hostname and domain, e.g. `pizza.food.com`.
 
@@ -15,7 +13,6 @@
 1. In the domain’s DNS, add an A record for the hostname pointing to cloud server's IP.
 
 ### Security
-===========
 
 #### Create non-root user
 
@@ -107,9 +104,6 @@
 	
 	Record the password you set for MYSQL's root user.
 
-### Other
-========
-
 #### Time Zone
 
 1. Verify time zone is set to UTC:
@@ -123,7 +117,6 @@
 		export EDITOR=/usr/bin/vi
 
 ### Networking
-=============
 
 1. Create a file containing the machine’s name:
 
@@ -167,7 +160,6 @@
 		# ip addr show eth0
 
 ### Apache
-=========
 
 1. Navigate to the server’s DNS name to test the Apache installation. You should see the default “It works!” page.
 
@@ -224,7 +216,6 @@
 		$ sudo service apache2 restart
 
 ### PHP
-======
 
 1. Install PHP:
 
@@ -237,7 +228,6 @@
 		phpinfo();
 		
 ### MYSQL
-========
 
 1. Edit MYSQL's configuration file `/etc/mysql/my.cnf`:
 
@@ -290,10 +280,9 @@
 		# postfix start
 		# echo 'this is a test'| mail -s Test me@food.com
 
-	Note: I did make one change from the instructions in the postfix docs. I left the relayhost parameter blank, so outgoing emails are delivered directly to the MX of the recipient’s domain name. Using the suggested value of $mydomain would mean all outgoing mail is sent though my domain’s MX (which is Google Apps). I originally had it set that way, until Google started sending me back bounces that said “account doesn’t exist” for non-Google email addresses.
+**Note:** Unlike the instructions in the postfix docs, I left the `relayhost` parameter blank, so that outgoing emails are delivered directly to the MX of the recipient’s domain name. Using the suggested value of `$mydomain` would route all outgoing mail though my domain’s MX (which is Google Apps). I originally had it set that way, until Google started sending “account doesn’t exist” bounce-backs for emails to non-Google addresses.
 
 ### Git
-======
 
 1. Copy private keys for Github and Bitbucket to `/home/username/.ssh`.
 
@@ -316,8 +305,26 @@
 		$ git config --global user.name "Testy Tester"
 		$ git config --global user.email webmaster@food.com
 
+### Web development frameworks
+
+1. Create a folder for web frameworks:
+	
+		$ mkdir /var/www/frameworks
+
+1. Clone public repositories:
+
+		$ cd /var/www/frameworks
+		$ git clone https://github.com/beebauman/ie-vay.git
+		$ git clone https://github.com/beebauman/mediaelement-timecode.git
+		$ git clone https://github.com/twbs/bootstrap.git
+		$ git clone https://github.com/FortAwesome/Font-Awesome.git font-awesome
+		$ git clone https://github.com/jasny/bootstrap.git bootstrap-jasny
+		$ git clone https://github.com/johndyer/mediaelement.git
+		$ git clone https://github.com/carhartl/jquery-cookie.git
+
+1. Manually copy `jquery`, `jquery-mobile`, and `jquery-ui` into the frameworks folder.
+		
 ### Cron
-=======
 
 1. Set up your email address to recieve cronjob output from the root, username, and system crontabs.
 
@@ -331,7 +338,6 @@
 		MAILTO="webmaster@food.com"
 
 ## Misc.
-========
 
 #### Install an FTP client
 
@@ -359,11 +365,11 @@ Enter command mode by hitting control-A, and then turn multi-user mode on:
 
 Enter another command to give permission to the second user to share the session:
 
-	:acladd [username2]
+	:acladd username2
 
 The second user can then join the session:
 
-	# screen -x [username1]/collaborate
+	# screen -x username1/collaborate
 
 #### Install a browsing proxy
 
@@ -378,26 +384,26 @@ Edit `/etc/tinyproxy.conf`:
 
 Then restart TinyProxy:
 
-	/etc/init.d/tinyproxy restart
+	# /etc/init.d/tinyproxy restart
 
 Note: the TinyProxy default port is 8888. Don’t forget to open the firewall!
 
 #### Delete all files except certain ones
 
-	find . ! -name "do-not-delete-me*" -type f -exec rm -rf {} \;
+	$ find . ! -name "do-not-delete-me*" -type f -exec rm -rf {} \;
 
 #### Completely remove a package and all its files
 
-	apt-get --purge remove packagename
+	# apt-get --purge remove packagename
 
 #### Find and replace
 
-	apt-get install rpl
+	# apt-get install rpl
 
 #### Find and replace text throughout all SMF posts
 
-	UPDATE `smf_messages`
-	SET `body` = REPLACE(`body`, 'search string', 'replacement string');
+	> UPDATE `smf_messages`
+	> SET `body` = REPLACE(`body`, 'search string', 'replacement string');
 
 
 

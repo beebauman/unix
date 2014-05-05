@@ -9,9 +9,7 @@
 	* Included and excluded paths are specified using a simple but powerful filter list (template provided).
 	* Optionally include all MySQL databases, crontabs, and cronjobs in the backup. (A script that restores crontabs from the backups is also included.)
 
-### Compatibility notice
-
-Tested on Debian 7 (wheezy) and Mac OS X 10.9 (Mavericks).
+**Compatibility notice:** Tested on Debian 7 (wheezy) and Mac OS X 10.9 (Mavericks).
 
 ## Getting started
 
@@ -32,11 +30,11 @@ Tested on Debian 7 (wheezy) and Mac OS X 10.9 (Mavericks).
 
 		$ /unixme/server-setup.sh
 
-### Backup script
+### Backing up
 
 #### Prepare the server
 
-To back up directories and files that require root access, you need to configure the server to allow `sudo rsync` without asking for a password:
+Allow `sudo rsync` without re-authentication:
 
 1. Edit `/etc/sudoers`:
 
@@ -44,17 +42,15 @@ To back up directories and files that require root access, you need to configure
 
 #### Prepare your local machine
 
-1. Clone the unixme repository to a location on your local machine.
+1. Clone the repository to your local machine.
 		
 		$ git clone https://github.com/beebauman/unixme.git
 
-1. Create a folder on local machine to store the backup.
-
-1. Create your own filters that specify the directories and files on the server that will be included/excluded in the backup by copying `unixme/backup-server-default-filter-rules.txt`.
+1. Create your own filter rules file that identifies the paths on the server to be included/excluded in the backup. Use `unixme/backup-server-default-filter-rules.txt` as a template.
 
 #### Run the backup script
 
-Summary of script options:
+**Script options:**
 
 |Option        | Short| Meaning                                                                    |
 |--------------|------|----------------------------------------------------------------------------|
@@ -64,11 +60,9 @@ Summary of script options:
 |`--crontabs`  |`-c`  | Before backup, copy crontabs to /var/backups/crontabs.                     |
 |`--databases` |`-d`  | Before backup, copy MySQL databases to /var/backups/mysql/databases.       |
 
-Example:
-		
-		$ server-backup.sh --host pizza --path /Local/backup/directory --filters /Filter/rules/file --crontabs --databases 
+**Example:** `$ server-backup.sh --host pizza --path /Local/backup/directory --filters /Filter/rules/file --crontabs --databases`
 
-**Note**: The `--host` you supply must be the short name of a `Host` whose `Hostname`, `User`, and authentication parameters are defined in your local machine's `~/.ssh/config`. For example:
+**Note**: The supplied `--host`'s `Hostname`, `User`, and authentication parameters must be defined in `~/.ssh/config`, for example:
 
 		$ cat ~/.ssh/config
 		Host pizza

@@ -5,10 +5,10 @@
 # --------------------------------------------------#
 
 # If you don't want to enter your MySQL username and/or password every time you run this script, save them here.
-######## *-*-*-*-* ########
+################
 mysqlUser=""
 mysqlPassword=""
-######## *-*-*-*-* ########
+################
 
 # Read MySQL username from stdin if empty
 if [ -z "${mysqlUser}" ] then
