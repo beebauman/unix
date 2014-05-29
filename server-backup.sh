@@ -84,15 +84,17 @@ else
 fi
 
 # Cron
-if [ $crontabs -eq 1 ] then
+if [ $crontabs -eq 1 ]
+then
 	echo "Running crontab backup script..."
-	ssh -t $host /unixme/backup-crontabs.sh
+	ssh -t $host /unixme/crontabs-backup.sh
 fi
 
 # MySQL
-if [ $databases -eq 1 ] then
+if [ $databases -eq 1 ]
+then
 	echo "Running MySQL databases backup script..."
-	ssh -t $host /unixme/backup-mysql.sh
+	ssh -t $host /unixme/mysql-backup.sh
 fi
 
 # Synchronize the local backup directory with the backup items on the server.

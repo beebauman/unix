@@ -316,7 +316,10 @@
 		$ cd /var/www/frameworks
 		$ git clone https://github.com/beebauman/ie-vay.git
 		$ git clone https://github.com/beebauman/mediaelement-timecode.git
+		$ git clone https://github.com/beebauman/formative.git
 		$ git clone https://github.com/twbs/bootstrap.git
+		$ git clone https://github.com/ftlabs/fastclick.git
+		$ git clone https://github.com/gfranko/jquery.selectBoxIt.js.git select-box-it
 		$ git clone https://github.com/FortAwesome/Font-Awesome.git font-awesome
 		$ git clone https://github.com/jasny/bootstrap.git bootstrap-jasny
 		$ git clone https://github.com/johndyer/mediaelement.git
@@ -336,6 +339,10 @@
 
 		$ sudo vi /etc/crontab
 		MAILTO="webmaster@food.com"
+
+2. Uninstall `anacron` so that it doesn't conflict with `cron`:
+		
+		$ sudo apt-get remove --purge anacron
 
 ## Misc.
 

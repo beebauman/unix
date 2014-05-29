@@ -11,18 +11,21 @@ mysqlPassword=""
 ################
 
 # Read MySQL username from stdin if empty
-if [ -z "${mysqlUser}" ] then
+if [ -z "${mysqlUser}" ]
+then
   read -p "MySQL username: " mysqlUser
 fi
 
 # Read MySQL password from stdin if empty
-if [ -z "${mysqlPassword}" ] then
+if [ -z "${mysqlPassword}" ]
+then
   read -s -p "MySQL password: " mysqlPassword
 fi
 
 # Check MySQL password
 echo exit | mysql --user=${mysqlUser} --password=${mysqlPassword} -B 2>/dev/null
-if [ "$?" -gt 0 ] then
+if [ "$?" -gt 0 ]
+then
   echo "Incorrect password for MySQL user ${mysqlUser}."
   exit 1
 else

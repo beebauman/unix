@@ -36,7 +36,7 @@
 
 Allow `sudo rsync` without re-authentication:
 
-1. Edit `/etc/sudoers`:
+1. Edit `/etc/sudoers` using the `$ sudo visudo` command:
 
 		username ALL = NOPASSWD: /usr/bin/rsync
 
