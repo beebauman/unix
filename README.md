@@ -20,7 +20,9 @@
 1. Clone the repository into your server's root directory.
 		
 		$ cd /
-		$ git clone https://github.com/beebauman/unixme.git
+		$ sudo mkdir unixme
+		$ sudo chown -R username:username unixme
+		$ git clone https://github.com/beebauman/unixme.git unixme
 
 1. Add your MYSQL username and password to `/unixme/mysql-backup.sh`.
 
