@@ -24,7 +24,7 @@ done
 
 # Get the backup path.
 backupPath=$(eval "echo $path")
-echo "Your backup will be saved to ${path}."
+echo "Your backup will be saved to ${backupPath}."
 
 # Get the ~/.ssh/config entry for the specified host.
 hostEntry=$(cat ~/.ssh/config | \
@@ -44,7 +44,7 @@ function hostParameter () {
 hostname=$(hostParameter Hostname)
 
 if [ -z "$hostname" ]
-  then
+then
     echo "Hostname not found. Exiting."
     exit 1
 else
@@ -54,7 +54,7 @@ fi
 # Get the port.
 port=$(hostParameter Port)
 if [ -z "$port" ]
-  then
+then
     echo "Custom port not found in host's SSH configuration. We'll use the default port for SSH (22)."
     port=22;
 else
@@ -63,7 +63,7 @@ fi
 
 # Get the path to the filter rules file.
 if [ -z "$filters" ]
-  then
+then
     scriptDirectory=$( cd "$( dirname "$0" )" && pwd )
     filters=$(eval "echo ${scriptDirectory}/backup-server-default-filters.txt")
     echo "No filter rules file specified. We'll use the default one at ${filters}."

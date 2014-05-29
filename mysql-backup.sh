@@ -48,7 +48,8 @@ mysql_databases=`echo 'show databases' | mysql --user=${mysqlUser} --password=${
 # Backup and compress each database
 for database in $mysql_databases
 do
-  if [ "${database}" == "information_schema" ] || [ "${database}" == "performance_schema" ] then
+  if [ "${database}" == "information_schema" ] || [ "${database}" == "performance_schema" ]
+  then
         additional_mysqldump_params="--skip-lock-tables"
   else
         additional_mysqldump_params=""
