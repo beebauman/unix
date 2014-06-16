@@ -18,7 +18,7 @@ sites=(*)
 
 for site in "${sites[@]}"
 do
-	echo "Last 30 lines of /var/www/" ${site} "/error.log:"
+	echo "Last 30 lines of /var/www/"${site}"/error.log:"
 	tail -n 30 /var/www/${site}/error.log
 	printf "\n"
 done

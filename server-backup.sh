@@ -74,7 +74,8 @@ fi
 
 # Delete .DS_Store files in the local backup so that rsync won't need to.
 echo "Looking for local .DS_Store files..."
-fileCount=$(find "$backupPath" -name '*.DS_Store' -type f -exec rm {} \; -print | wc -l)
+echo "backupPath is $backupPath"
+fileCount=$(find "${backupPath}" -name '*.DS_Store' -type f -exec rm {} \; -print | wc -l)
 fileCount=$(echo $fileCount) # Just to strip leading whitespace from wc output.
 if [ $fileCount -lt 1 ]
 then
