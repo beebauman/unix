@@ -38,14 +38,11 @@
 # Networking configuration
 + /etc/hostname
 + /etc/hosts
-+ /etc/network/interfaces
++ /etc/network/***
 + /etc/resolv.conf
 
 # Postfix configuration
 + /etc/postfix/main.cf
-
-# iptables 
-+ /etc/network/if-pre-up.d/iptables-load
 
 # sudo configuration
 + /etc/sudoers
