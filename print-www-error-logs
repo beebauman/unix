@@ -12,13 +12,23 @@
 
 # ----------------------------------------------------------------------- #
 
-cd /etc/apache2/sites-enabled
+sitesDirectory="/etc/apache2/sites-enabled"
 
-sites=(*)
+if [ -d "$sitesDirectory" ]; then
 
-for site in "${sites[@]}"
-do
-	echo "Last 30 lines of /var/www/"${site}"/error.log:"
-	tail -n 30 /var/www/${site}/error.log
-	printf "\n"
-done
+	cd "$sitesDirectory"
+
+	sites=(*)
+
+	for site in "${sites[@]}"
+	do
+		echo "Last 30 lines of /var/www/"${site}"/error.log:"
+		tail -n 30 /var/www/${site}/error.log
+		printf "\n"
+	done
+
+else
+	
+	echo "There are no Apache sites enabled."
+
+fi
