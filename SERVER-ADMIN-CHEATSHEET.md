@@ -25,35 +25,39 @@
 	
 		# passwd
 
-1. Create non-root user:
+1. Create new (non-root) user:
 		
 		# useradd --user-group --groups sudo --create-home --shell /bin/bash username
 
+1. Assign a password to the new user:
+
+		# passwd username
+		
 #### Set up keypair authentication
 
 ##### Generate keypair on local machine
 
 		$ ssh-keygen
-		[enter path to private key file e.g. /Users/local_username/Downloads/username_rsa]
+		[enter path to private key file e.g. /Users/local_username/Downloads/id_rsa]
 		[Leave passphrase blank]
 
 ##### Put public key on server
 
 1. Copy the public key to the server:
 
-		$ scp -o PubkeyAuthentication=no /Users/local_username/Downloads/username_rsa.pub root@food.pizza.com:
+		$ scp -o PubkeyAuthentication=no /Users/local_username/Downloads/id_rsa.pub root@food.pizza.com:
 
 1. Move it into the right place:
 		
 		# mkdir /home/username/.ssh
-		# mv /home/username/.ssh/authorized_keys
+		# mv id_rsa.pub /home/username/.ssh/authorized_keys
 		# chown -R username:username .ssh
 		# chmod 700 .ssh
 		# chmod 600 .ssh/authorized_keys
 
 ##### Disable server's password authentication and root login
 
-1. Modify the server’s SSH configuration file `/etc/ssh/sshd_config`:
+1. Modify the server’s SSH configuration file `/etc/ssh/sshd_config` as follows:
 
 		PasswordAuthentication no
 		PermitRootLogin no
@@ -89,7 +93,6 @@
 		$ ssh pizza
 		
 	Hopefully that worked :-)
-
 
 #### Packages
 
@@ -154,6 +157,8 @@
 1. Check the configured DNS resolvers in `/etc/resolv.conf`. Make sure the IP addresses match the resolvers provided by the hosting company. Optionally add this line for round-robining:
 		
 		options rotate
+
+	Note: Digital Ocean servers have some kind of issue with reverse DNS lookups through Level3 (`4.2.2.2`) that causes SSH logins to be delayed for about 15 seconds (unless `/etc/ssh/sshd_config` has `UseDNS` set to `no`). To solve, move `4.2.2.2` to the last line of this file, if present.
 
 1. Reboot the server, and then confirm that the public and private IP addresses are up:
 
@@ -258,11 +263,11 @@
 
 ### Postfix
 
-1. Install postfix.
+1. Install postfix and mailx.
 
-		# apt-get install postfix
+		# apt-get install postfix mailx
 
-	Choose “Internet site” option when asked during installation.
+	Choose “Internet site” option when asked during postfix installation.
 
 2. To configure for sending mail only (copied from http://www.postfix.org/STANDARD_CONFIGURATION_README.html#null_client):
 
@@ -409,9 +414,8 @@ Note: the TinyProxy default port is 8888. Don’t forget to open the firewall!
 
 #### Find and replace text throughout all SMF posts
 
-	> UPDATE `smf_messages`
-	> SET `body` = REPLACE(`body`, 'search string', 'replacement string');
-
+    > UPDATE `smf_messages`
+    > SET `body` = REPLACE(`body`, 'search string', 'replacement string');
 
 
 

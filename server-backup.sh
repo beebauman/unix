@@ -99,5 +99,5 @@ then
 fi
 
 # Synchronize the local backup directory with the backup items on the server.
-rsync --archive --recursive --compress --prune-empty-dirs --delete --relative --ignore-errors --rsync-path="sudo rsync" \
+rsync --verbose --archive --recursive --compress --prune-empty-dirs --delete --relative --ignore-errors --rsync-path="sudo rsync" \
 	--filter="merge ${filters}" -e "ssh -p $port" "${host}":/ "$backupPath"
