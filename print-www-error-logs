@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Prints the last 30 lines of the error logs for every enabled Apache site.
+# Prints the last 30 lines of the error logs for every enabled Apache site and for PHP.
 
 # IMPORTANT: The script assumes that all your Apache error logs are
-# at /var/www/sitename/error.log.
-
+# at /var/www/sitename/error.log, and your PHP error log is at /var/log/php/php_errors.log.
 # SUGGESTION: Save this script to /etc/cron.daily/, and the error logs will be emailed
 # to you once a day, assuming you've got MAILTO="your@email.com" in your system
 # crontab (/etc/crontab), root user crontab (sudo crontab -e), and non-root user 
