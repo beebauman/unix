@@ -22,6 +22,7 @@ if [ -d "$sitesDirectory" ]; then
 
 	for site in "${sites[@]}"
 	do
+		site = ${site/.conf/}
 		echo "Last 30 lines of /var/www/"${site}"/error.log:"
 		tail -n 30 /var/www/${site}/error.log
 		printf "\n"
