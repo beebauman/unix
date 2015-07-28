@@ -3,8 +3,8 @@
 ## Features
 
 * Sets up an `iptables` firewall with an editable ruleset that survives reboots.
-* Adds a daily cronjob that emails you the tail of the Apache error logs for all your websites.
-* Includes a backup script for your local machine to sync your server's important files:
+* Adds a daily cronjob that emails you the tail of the Apache and PHP error logs for all your websites.
+* Enables a backup script you can run from your local machine to sync your server's important files:
 	* Backups are performed using rsync, which is fast and incremental.
 	* Included and excluded paths are specified using a simple but powerful filter list (template provided).
 	* Optionally include all MySQL databases, crontabs, and cronjobs in the backup. (A script that restores crontabs from the backups is also included.)
@@ -24,15 +24,13 @@
 		$ sudo chown -R username:username unixme
 		$ git clone https://github.com/beebauman/unixme.git unixme
 
-1. Add your MYSQL username and password to `/unixme/mysql-backup.sh`.
-
 1. Edit `/unixme/iptables-rules` as desired.
 
 1. Run the setup script
 
 		$ /unixme/server-setup.sh
 
-### Backing up
+### Backing up to your local machine
 
 #### Prepare the server
 
@@ -54,17 +52,17 @@ Allow `sudo rsync` without re-authentication:
 
 **Script options:**
 
-|Option        | Short| Meaning                                                                    |
-|--------------|------|----------------------------------------------------------------------------|
-|`--host`      |`-h`  | Followed by name of `Host` defined in local `~/.ssh/config`. **Required.** |
-|`--path`      |`-p`  | Followed by path to a directory to save the backup in. **Required.**       |
-|`--filters`   |`-p`  | Followed by path to filter rules file. **Required.**                       |
-|`--crontabs`  |`-c`  | Before backup, copy crontabs to /var/backups/crontabs.                     |
-|`--databases` |`-d`  | Before backup, copy MySQL databases to /var/backups/mysql/databases.       |
+|Option         | Short| Meaning                                                                    |
+|---------------|------|----------------------------------------------------------------------------|
+|`--host`       |`-h`  | Followed by name of `Host` defined in local `~/.ssh/config`. **Required.** |
+|`--path`       |`-p`  | Followed by path to a directory to save the backup in. **Required.**       |
+|`--filters`    |`-p`  | Followed by path to filter rules file. **Required.**                       |
+|`--crontabs`   |`-c`  | Before backup, copy crontabs to /var/backups/crontabs.                     |
+|`--databases`  |`-d`  | Before backup, copy MySQL databases to /var/backups/mysql/databases.       |
 
 **Example:** `$ server-backup.sh --host pizza --path /Local/backup/directory --filters /Filter/rules/file --crontabs --databases`
 
-**Note**: The supplied `--host`'s `Hostname`, `User`, and authentication parameters must be defined in `~/.ssh/config`, for example:
+**Note**: The supplied `--host`'s authentication parameters must be defined in `~/.ssh/config`, for example:
 
 		$ cat ~/.ssh/config
 		Host pizza
