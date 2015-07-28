@@ -33,3 +33,8 @@ else
 	echo "There are no Apache sites enabled."
 
 fi
+
+phpLogPath="/var/log/php5/error.log"
+echo "Last 30 lines of"${phpLogPath}":"
+tail -n 30 ${phpLogPath}
+printf "\n"
