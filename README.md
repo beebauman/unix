@@ -34,9 +34,7 @@
 
 #### Prepare the server
 
-Allow `sudo rsync` without re-authentication:
-
-1. Edit `/etc/sudoers` using the `$ sudo visudo` command:
+The backup script requires you to allow execution on the server of `sudo rsync` without re-authentication. To do so, edit `/etc/sudoers` using the `$ sudo visudo` command. Add this line to that file:
 
 		username ALL = NOPASSWD: /usr/bin/rsync
 
