@@ -34,7 +34,7 @@ else
 
 fi
 
-phpLogPath="/var/log/php5/error.log"
+phpLogPath="/var/log/php/php_errors.log"
 echo "Last 30 lines of"${phpLogPath}":"
 tail -n 30 ${phpLogPath}
 printf "\n"
