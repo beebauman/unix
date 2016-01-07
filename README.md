@@ -60,7 +60,7 @@ The backup script requires you to allow execution on the server of `sudo rsync` 
 
 **Example:** `$ server-backup.sh --host pizza --path /Local/backup/directory --filters /Filter/rules/file --crontabs --databases`
 
-**Note**: The supplied `--host`'s authentication parameters must be defined in `~/.ssh/config`, for example:
+**Note**: The supplied `--host`'s authentication parameters must be defined in your local `~/.ssh/config`, for example:
 
 		$ cat ~/.ssh/config
 		Host pizza

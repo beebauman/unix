@@ -43,7 +43,7 @@
 
 ##### Put public key on server
 
-1. Copy the public key to the server:
+1. Copy the public key to the server (don't forget the colon at the end):
 
 		$ scp -o PubkeyAuthentication=no /Users/local_username/Downloads/id_rsa.pub root@food.pizza.com:
 
@@ -51,9 +51,9 @@
 		
 		# mkdir /home/username/.ssh
 		# mv id_rsa.pub /home/username/.ssh/authorized_keys
-		# chown -R username:username .ssh
-		# chmod 700 .ssh
-		# chmod 600 .ssh/authorized_keys
+		# chown -R username:username /home/username/.ssh
+		# chmod 700 /home/username/.ssh
+		# chmod 600 /home/username/.ssh/authorized_keys
 
 ##### Disable server's password authentication and root login
 
